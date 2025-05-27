@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "245228968198",
+    "project_id": "rma-projekt-3a08e",
+    "storage_bucket": "rma-projekt-3a08e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:245228968198:android:4f6fea49d8356060d3e687",
+        "android_client_info": {
+          "package_name": "com.example.snapsell_stankovic"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCskrVesbrbB-RwtAd-VQYwFjkM7_9-ldU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
