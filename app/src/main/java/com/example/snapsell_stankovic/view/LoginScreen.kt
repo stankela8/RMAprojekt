@@ -13,15 +13,15 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
 import com.example.snapsell_stankovic.viewmodel.AuthViewModel
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.input.KeyboardType
 
-
 @Composable
-fun LoginScreen(navController: NavController, authViewModel: AuthViewModel = viewModel()) {
+fun LoginScreen(
+    onLoginSuccess: () -> Unit,
+    authViewModel: AuthViewModel = viewModel()
+) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var ime by remember { mutableStateOf("") }
@@ -88,9 +88,7 @@ fun LoginScreen(navController: NavController, authViewModel: AuthViewModel = vie
 
             if (authStatus == "success") {
                 LaunchedEffect(Unit) {
-                    navController.navigate("home") {
-                        popUpTo("login") { inclusive = true }
-                    }
+                    onLoginSuccess()
                 }
             } else if (authStatus.isNotEmpty() && authStatus != "success") {
                 Text(
@@ -128,4 +126,3 @@ fun AuthInputField(
         )
     )
 }
-

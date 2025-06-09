@@ -13,19 +13,28 @@ class HomeViewModel : ViewModel() {
     private val _oglasi = MutableStateFlow<List<Oglas>>(emptyList())
     val oglasi: StateFlow<List<Oglas>> = _oglasi
 
+    val kategorije = listOf("Sve", "Elektronika", "Odjeća", "Namještaj", "Ostalo")
+
+    private var trenutnaKategorija: String = "Sve"
+
     init {
-        listenToOglasi()
+        listenToOglasi("Sve")
     }
 
-    private fun listenToOglasi() {
-        db.collection("oglasi").addSnapshotListener { snapshot, error ->
-            if (error != null) {
-                return@addSnapshotListener
-            }
-
+    fun listenToOglasi(kategorija: String) {
+        trenutnaKategorija = kategorija
+        val query = if (kategorija == "Sve") {
+            db.collection("oglasi")
+        } else {
+            db.collection("oglasi").whereEqualTo("kategorija", kategorija)
+        }
+        query.addSnapshotListener { snapshot, error ->
+            if (error != null) return@addSnapshotListener
             if (snapshot != null && !snapshot.isEmpty) {
                 val lista = snapshot.documents.mapNotNull { it.toObject(Oglas::class.java) }
                 _oglasi.value = lista
+            } else {
+                _oglasi.value = emptyList()
             }
         }
     }

@@ -8,5 +8,6 @@ data class Oglas(
     val kategorija: String = "",
     val opis: String = "",
     val imageUrl: String = "",
-    val vlasnik: String = ""
+    val vlasnik: String = "",
+    val id: String = ""
 ) : Serializable

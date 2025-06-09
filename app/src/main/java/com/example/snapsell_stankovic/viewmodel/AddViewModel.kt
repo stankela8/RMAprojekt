@@ -4,14 +4,12 @@ import android.content.Context
 import android.net.Uri
 import android.widget.Toast
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.example.snapsell_stankovic.model.Oglas
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.launch
 import java.util.*
 
 class AddViewModel : ViewModel() {
@@ -26,7 +24,6 @@ class AddViewModel : ViewModel() {
     fun resetStatus() {
         _status.value = ""
     }
-
     fun uploadOglas(
         ime: String,
         cijena: String,
@@ -60,17 +57,22 @@ class AddViewModel : ViewModel() {
                     }
                     .addOnSuccessListener { uri ->
                         val imageUrl = uri.toString()
+                        // Ispravak: Uklonjeno 'id = it.id' jer 'it' ovdje referira na URI slike
                         val oglas = Oglas(
                             ime = ime,
                             cijena = cijena,
                             kategorija = kategorija,
                             opis = opis,
                             imageUrl = imageUrl,
-                            vlasnik = imeVlasnika
+                            vlasnik = currentUser.uid, // Spremamo UID umjesto imena
+                            id = ""
                         )
 
+
                         db.collection("oglasi").add(oglas)
-                            .addOnSuccessListener {
+                            .addOnSuccessListener { documentReference ->
+                                // Ovdje možete dohvatiti ID novog dokumenta ako je potrebno
+                                val docId = documentReference.id
                                 _status.value = "success"
                             }
                             .addOnFailureListener {
@@ -82,11 +84,11 @@ class AddViewModel : ViewModel() {
                         _status.value = "error"
                         Toast.makeText(context, "Greška pri uploadu slike", Toast.LENGTH_SHORT).show()
                     }
-
             }
             .addOnFailureListener {
                 _status.value = "error"
                 Toast.makeText(context, "Ne mogu dohvatiti korisnika", Toast.LENGTH_SHORT).show()
             }
     }
+
 }

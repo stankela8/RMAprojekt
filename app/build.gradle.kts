@@ -73,6 +73,8 @@ dependencies {
     implementation("com.google.firebase:firebase-firestore:24.9.1")
     implementation("androidx.activity:activity-ktx:1.8.0")
     implementation("androidx.fragment:fragment-ktx:1.6.1")
-    implementation("io.coil-kt:coil-compose:2.5.0")
+    implementation("io.coil-kt:coil-compose:2.6.0")
     implementation("androidx.navigation:navigation-compose:2.7.5")
+    implementation("com.google.firebase:firebase-bom:32.8.0")
+    implementation("com.google.android.gms:play-services-auth:21.0.0")
 }
