@@ -23,7 +23,7 @@ import com.example.snapsell_stankovic.viewmodel.HomeViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
-    navController: NavHostController, // Dodajemo navController kao prvi parametar
+    navController: NavHostController,
     onNavigateToDetails: (Oglas) -> Unit
 ) {
     val viewModel: HomeViewModel = viewModel()
@@ -85,7 +85,7 @@ fun HomeScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .clickable {
-                            onNavigateToDetails(oglas) // Koristi callback umjesto direktne navigacije
+                            onNavigateToDetails(oglas)
                         },
                     elevation = CardDefaults.cardElevation(4.dp)
                 ) {

@@ -25,56 +25,70 @@ sealed class BottomNavItem(val title: String, val icon: ImageVector, val route: 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BottomNavigationScreen(rootNavController: NavHostController) {
-    val tabNavController = rememberNavController()
-    val items = listOf(BottomNavItem.Home, BottomNavItem.Add, BottomNavItem.Profile)
-    val navBackStackEntry by tabNavController.currentBackStackEntryAsState()
-    val currentRoute = navBackStackEntry?.destination?.route
+    fun BottomNavigationScreen(rootNavController: NavHostController) {
+        val tabNavController = rememberNavController()
+        val items = listOf(
+            BottomNavItem.Home,
+            BottomNavItem.Add,
+            BottomNavItem.Profile
+        )
+        val navBackStackEntry by tabNavController.currentBackStackEntryAsState()
+        val currentRoute = navBackStackEntry?.destination?.route
 
-    Scaffold(
-        bottomBar = {
-            NavigationBar {
-                items.forEach { item ->
-                    NavigationBarItem(
-                        selected = currentRoute == item.route,
-                        onClick = {
-                            tabNavController.navigate(item.route) {
-                                // Resetiraj cijeli stack do početka i idi na tab
-                                popUpTo(tabNavController.graph.findStartDestination().id) {
-                                    inclusive = true
+        Scaffold(
+            bottomBar = {
+                NavigationBar {
+                    items.forEach { item ->
+                        NavigationBarItem(
+                            selected = currentRoute == item.route,
+                            onClick = {
+                                tabNavController.navigate(item.route) {
+                                    popUpTo(tabNavController.graph.findStartDestination().id) {
+                                        inclusive = true
+                                    }
+                                    launchSingleTop = true
                                 }
-                                launchSingleTop = true
-                            }
-                        },
-                        icon = { Icon(item.icon, contentDescription = item.title) },
-                        label = { Text(item.title) }
+                            },
+                            icon = { Icon(item.icon, contentDescription = item.title) },
+                            label = { Text(item.title) }
+                        )
+                    }
+                }
+            }
+        ) { innerPadding ->
+            NavHost(
+                navController = tabNavController,
+                startDestination = BottomNavItem.Home.route,
+                modifier = Modifier.padding(innerPadding)
+            ) {
+                composable(BottomNavItem.Home.route) {
+                    HomeScreen(
+                        navController = tabNavController,
+                        onNavigateToDetails = { oglas ->
+                            tabNavController.currentBackStackEntry?.savedStateHandle?.set(
+                                "oglas",
+                                oglas
+                            )
+                            tabNavController.navigate("details")
+                        }
+                    )
+                }
+                composable(BottomNavItem.Add.route) { AddScreen() }
+                composable("details") {
+                    DetailsScreen(
+                        navController = tabNavController,
+                        onBack = { tabNavController.popBackStack() }
+                    )
+                }
+                composable("notifications") {
+                    NotificationsScreen(tabNavController)
+                }
+                composable(BottomNavItem.Profile.route) {
+                    MyProfileScreen(
+                        rootNavController = rootNavController, // za logout
+                        tabNavController = tabNavController    // za navigaciju unutar tabova
                     )
                 }
             }
         }
-    ) { innerPadding ->
-        NavHost(
-            navController = tabNavController,
-            startDestination = BottomNavItem.Home.route,
-            modifier = Modifier.padding(innerPadding)
-        ) {
-            composable(BottomNavItem.Home.route) {
-                HomeScreen(
-                    navController = tabNavController,
-                    onNavigateToDetails = { oglas ->
-                        tabNavController.currentBackStackEntry?.savedStateHandle?.set("oglas", oglas)
-                        tabNavController.navigate("details")
-                    }
-                )
-            }
-            composable(BottomNavItem.Add.route) { AddScreen() }
-            composable(BottomNavItem.Profile.route) { MyProfileScreen(rootNavController) }
-            composable("details") {
-                DetailsScreen(
-                    navController = tabNavController,
-                    onBack = { tabNavController.popBackStack() }
-                )
-            }
-        }
     }
-}

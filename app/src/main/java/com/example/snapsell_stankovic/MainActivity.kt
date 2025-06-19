@@ -21,6 +21,7 @@ import com.example.snapsell_stankovic.view.DetailsScreen
 import com.example.snapsell_stankovic.view.HomeScreen
 import com.example.snapsell_stankovic.view.LoginScreen
 import com.example.snapsell_stankovic.view.MyProfileScreen
+import com.example.snapsell_stankovic.view.NotificationsScreen
 import com.example.snapsell_stankovic.viewmodel.AuthViewModel
 
 class MainActivity : ComponentActivity() {
@@ -54,7 +55,7 @@ fun AppNavigation() {
             )
         }
         composable("main") {
-            BottomNavigationScreen(rootNavController = navController)
+            BottomNavigationScreen(navController)
         }
     }
 }

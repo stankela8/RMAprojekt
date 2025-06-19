@@ -51,13 +51,13 @@ fun AddScreen() {
     var kategorija by remember { mutableStateOf("") }
     var opis by remember { mutableStateOf("") }
 
-    val kategorije = listOf("Elektronika", "Odjeća", "Namještaj", "Ostalo")
+    val kategorije = listOf("Elektronika", "Odjeća", "Kozmetika","Obuća", "Ostalo")
     var expanded by remember { mutableStateOf(false) }
 
     var capturedImageUri by remember { mutableStateOf<Uri>(Uri.EMPTY) }
     var photoFile by remember { mutableStateOf<File?>(null) }
 
-    // Funkcija za kreiranje slike u vanjskom cacheu (kao kod prijatelja)
+    // Funkcija za kreiranje slike
     fun createImageFile(context: Context): File {
         val timeStamp = SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", Locale.getDefault()).format(Date())
         val imageFileName = "JPEG_${timeStamp}_"
@@ -66,7 +66,7 @@ fun AddScreen() {
         )
     }
 
-    // Pripremi file i uri unaprijed
+    // Pripremi file
     val file = remember { createImageFile(context) }
     val uri = FileProvider.getUriForFile(
         context,

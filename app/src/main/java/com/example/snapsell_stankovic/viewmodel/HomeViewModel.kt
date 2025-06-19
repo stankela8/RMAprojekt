@@ -13,7 +13,7 @@ class HomeViewModel : ViewModel() {
     private val _oglasi = MutableStateFlow<List<Oglas>>(emptyList())
     val oglasi: StateFlow<List<Oglas>> = _oglasi
 
-    val kategorije = listOf("Sve", "Elektronika", "Odjeća", "Namještaj", "Ostalo")
+    val kategorije = listOf("Sve", "Elektronika", "Odjeća", "Kozmetika","Obuća", "Ostalo")
 
     private var trenutnaKategorija: String = "Sve"
 

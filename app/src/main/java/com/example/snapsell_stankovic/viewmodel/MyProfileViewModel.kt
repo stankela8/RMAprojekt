@@ -46,13 +46,12 @@ class MyProfileViewModel : ViewModel() {
         }
     }
 
-    // MyProfileViewModel.kt
     fun loadMyAds(context: Context) {
         _loading.value = true
         val currentUser = auth.currentUser
         if (currentUser != null) {
             db.collection("oglasi")
-                .whereEqualTo("vlasnik", currentUser.uid) // Promijenjeno u UID umjesto imena
+                .whereEqualTo("vlasnik", currentUser.uid)
                 .addSnapshotListener { value, error ->
                     _loading.value = false
                     if (error != null) {
@@ -71,13 +70,13 @@ class MyProfileViewModel : ViewModel() {
     fun deleteAd(ad: Oglas, context: Context) {
         viewModelScope.launch {
             try {
-                // Brisanje iz Firestore
+                // Brisanje iz baze
                 db.collection("oglasi").document(ad.id).delete()
 
                 // Brisanje slike iz Storagea
                 storage.getReferenceFromUrl(ad.imageUrl).delete()
 
-                // Ažuriraj listu
+                // Ažurirajnje liste
                 _myAds.value = _myAds.value.filter { it.id != ad.id }
             } catch (e: Exception) {
                 Toast.makeText(context, "Greška pri brisanju: ${e.message}", Toast.LENGTH_SHORT).show()

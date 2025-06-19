@@ -57,21 +57,20 @@ class AddViewModel : ViewModel() {
                     }
                     .addOnSuccessListener { uri ->
                         val imageUrl = uri.toString()
-                        // Ispravak: Uklonjeno 'id = it.id' jer 'it' ovdje referira na URI slike
+
                         val oglas = Oglas(
                             ime = ime,
                             cijena = cijena,
                             kategorija = kategorija,
                             opis = opis,
                             imageUrl = imageUrl,
-                            vlasnik = currentUser.uid, // Spremamo UID umjesto imena
+                            vlasnik = currentUser.uid,
                             id = ""
                         )
 
 
                         db.collection("oglasi").add(oglas)
                             .addOnSuccessListener { documentReference ->
-                                // Ovdje možete dohvatiti ID novog dokumenta ako je potrebno
                                 val docId = documentReference.id
                                 _status.value = "success"
                             }

@@ -20,11 +20,14 @@ import com.example.snapsell_stankovic.model.Oglas
 import com.example.snapsell_stankovic.viewmodel.AuthViewModel
 import com.example.snapsell_stankovic.viewmodel.MyProfileViewModel
 import androidx.compose.material.icons.filled.ExitToApp
+import androidx.compose.material.icons.filled.Notifications
+import androidx.navigation.NavGraph.Companion.findStartDestination
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MyProfileScreen(rootNavController: NavHostController) {
+fun MyProfileScreen(rootNavController: NavHostController,
+                    tabNavController: NavHostController) {
     val context = LocalContext.current
     val myProfileViewModel: MyProfileViewModel = viewModel()
     val authViewModel: AuthViewModel = viewModel()
@@ -43,17 +46,22 @@ fun MyProfileScreen(rootNavController: NavHostController) {
                 title = { Text("Moj profil") },
                 actions = {
                     IconButton(
+                        onClick = { tabNavController.navigate("notifications") }
+                    ) {
+                        Icon(Icons.Default.Notifications, contentDescription = "Obavijesti")
+                    }
+                    IconButton(
                         onClick = {
                             authViewModel.logout(context)
                             rootNavController.navigate("login") {
-                                popUpTo(0)
+                                popUpTo(rootNavController.graph.findStartDestination().id) {
+                                    inclusive = true
+                                }
+                                launchSingleTop = true
                             }
                         }
                     ) {
-                        Icon(
-                            imageVector = Icons.Filled.ExitToApp,
-                            contentDescription = "Odjava"
-                        )
+                        Icon(Icons.Filled.ExitToApp, contentDescription = "Odjava")
                     }
                 }
             )
