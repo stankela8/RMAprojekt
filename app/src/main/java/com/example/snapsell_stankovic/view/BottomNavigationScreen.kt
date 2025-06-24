@@ -18,9 +18,9 @@ import androidx.navigation.compose.rememberNavController
 import com.example.snapsell_stankovic.model.Oglas
 
 sealed class BottomNavItem(val title: String, val icon: ImageVector, val route: String) {
-    object Home : BottomNavItem("Home", Icons.Default.Home, "home")
-    object Add : BottomNavItem("Add", Icons.Default.Add, "add")
-    object Profile : BottomNavItem("MyProfile", Icons.Default.Person, "myprofile")
+    object Home : BottomNavItem("Početna", Icons.Default.Home, "home")
+    object Add : BottomNavItem("Dodaj", Icons.Default.Add, "add")
+    object Profile : BottomNavItem("Moj Profil", Icons.Default.Person, "myprofile")
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
